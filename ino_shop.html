@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>iNO Shop</title>
+<style>
+:root{--bg:#0c0c10;--panel:#121218;--line:#26262f;--txt:#f5f5fa;--muted:#8c8c9c;--pur:#8b6cf0;--pur2:#b79cff;--green:#38d39f;--red:#ff6b6b}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--txt);font:16px system-ui,-apple-system,"Noto Sans Thai",sans-serif}
+header{position:sticky;top:10px;z-index:10;margin:10px auto 0;max-width:1080px;width:calc(100% - 24px);padding:12px 16px;border:1px solid var(--line);border-radius:22px;background:#0f0f14ee;backdrop-filter:blur(10px);display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.logo{font-size:22px;font-weight:850;cursor:pointer}.logo span{color:var(--pur2)}
+main{max-width:1080px;margin:22px auto;padding:0 12px}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:22px;padding:20px;margin:16px 0}
+h1,h2,h3,p{margin-top:0}h1{font-size:26px}.muted{color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:16px}
+input,textarea{width:100%;padding:12px 13px;background:#0a0a0e;border:1px solid #33333f;border-radius:12px;color:#fff;font:inherit;margin:6px 0 12px}
+textarea{min-height:90px;resize:vertical}label{font-size:14px;color:#cfcfdc}
+button{border:0;border-radius:12px;padding:11px 16px;background:linear-gradient(90deg,var(--pur),#2b1c55);color:#fff;font-weight:700;font:inherit;font-weight:700;cursor:pointer}
+button.secondary{background:#25252e}button.danger{background:#9f3547}button.sm{padding:6px 11px;font-size:13px}button.full{width:100%;padding:15px;font-size:17px}
+.actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.hidden{display:none!important}
+.pcard{background:var(--panel);border:1px solid var(--line);border-radius:22px;padding:14px;display:flex;flex-direction:column;gap:10px;position:relative}
+.thumb{width:100%;aspect-ratio:1/1;border-radius:16px;background:linear-gradient(135deg,#2a1c55,#0f0f14);object-fit:cover;display:flex;align-items:center;justify-content:center;font-size:54px;font-weight:800;color:var(--pur2)}
+.badge{position:absolute;top:6px;left:6px;z-index:2;background:linear-gradient(90deg,#7a58e8,#4b2fa8);padding:6px 14px;border-radius:14px;font-size:14px;font-weight:700;border:1px solid #a58cff66}
+.pname{font-size:21px;margin:2px 0}.hr{border-top:1px solid var(--line);margin:4px 0}
+.from{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}.big{font-size:30px;font-weight:800;color:var(--pur)}
+.old{text-decoration:line-through;color:var(--muted)}.off{background:#2a1517;color:#ff8c8c;padding:5px 11px;border-radius:10px;font-size:14px}
+.stats b{color:#fff}.stats em{font-style:normal;color:var(--pur2);font-weight:700}
+.opts{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px;margin:12px 0}
+.opt{border:1px solid var(--line);border-radius:18px;padding:14px;cursor:pointer;background:#0f0f14;position:relative}
+.opt.sel{border-color:var(--pur);box-shadow:0 0 0 1px var(--pur) inset}.opt.out{opacity:.45;cursor:not-allowed}
+.opt .l{padding-bottom:8px;border-bottom:1px solid var(--line);margin-bottom:8px;font-size:17px}
+.opt .r{display:flex;justify-content:space-between;align-items:baseline;gap:6px;flex-wrap:wrap}.opt .p{color:var(--pur);font-size:20px;font-weight:700}
+.opt .s{color:var(--muted);font-size:14px}.tick{position:absolute;top:12px;right:14px;color:var(--pur2)}
+.qty{display:flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:14px;padding:6px;background:#0a0a0e}
+.qty button{background:none;padding:6px 14px;font-size:20px}.qty span{min-width:40px;text-align:center}
+.row{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin:12px 0}
+.total{font-size:32px;font-weight:800;color:var(--pur)}
+.notice{padding:12px;border-radius:12px;background:#1a1730;color:#d5ccff;margin:12px 0;font-size:14px}.warning{background:#33270f;color:#ffe0a3}
+.vrow{border:1px solid var(--line);border-radius:14px;padding:12px;margin:10px 0;background:#0f0f14}
+.vgrid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:8px}
+.stockrow{display:flex;justify-content:space-between;gap:8px;align-items:center;padding:6px 10px;background:#0a0a0e;border:1px solid #33333f;border-radius:8px;margin:4px 0;font-family:monospace;font-size:13px;overflow-wrap:anywhere}
+a{color:var(--pur2);overflow-wrap:anywhere}.empty{padding:30px;text-align:center;color:var(--muted)}
+.crumb{font-size:14px;color:var(--muted);margin-bottom:12px}.crumb a{cursor:pointer;text-decoration:none}
+.order{border:1px solid var(--line);border-radius:14px;padding:14px;margin:10px 0;background:#0f0f14}
+.code{font-family:monospace;background:#0a0a0e;border:1px solid #33333f;border-radius:8px;padding:6px 10px;margin:4px 0;overflow-wrap:anywhere;font-size:13px}
+details summary{cursor:pointer;color:var(--pur2);font-size:14px}
+footer{text-align:center;color:var(--muted);padding:30px 15px;font-size:13px}
+@media(max-width:600px){.panel{padding:15px}h1{font-size:23px}.vgrid{grid-template-columns:1fr}}
+</style></head>
+<body>
+<header><div class="logo" id="logo">iNO <span>SHOP</span></div><div class="actions"><span id="who" class="muted"></span><button class="secondary sm hidden" id="ordersBtn">ออเดอร์ของฉัน</button><button class="secondary sm hidden" id="manageBtn">จัดการร้านค้า</button><button class="secondary sm" id="loginBtn">เข้าสู่ระบบ</button><button class="secondary sm hidden" id="logoutBtn">ออกจากระบบ</button></div></header>
+<main>
+<section id="auth" class="panel hidden">
+<h2 id="authTitle">เข้าสู่ระบบ</h2><label>ชื่อผู้ใช้</label><input id="authUser" autocomplete="username" placeholder="ชื่อผู้ใช้"><label>รหัสผ่าน</label><input id="authPass" type="password" autocomplete="current-password" placeholder="รหัสผ่าน">
+<div class="actions"><button id="authSubmit">เข้าสู่ระบบ</button><button class="secondary" id="switchAuth">สมัครสมาชิก</button><button class="secondary" id="closeAuth">ปิด</button></div><p id="authMsg" class="muted"></p>
+</section>
+
+<section id="shopView"><h1>สินค้าทั้งหมด</h1><div id="products" class="grid"></div></section>
+
+<section id="detailView" class="hidden"></section>
+
+<section id="ordersView" class="hidden"><div class="panel"><h2>ออเดอร์ของฉัน</h2><div id="orderList"></div></div></section>
+
+<section id="adminView" class="hidden">
+<div class="panel"><div class="actions" style="justify-content:space-between"><div><h2>จัดการร้านค้า</h2><p class="muted">เพิ่มสินค้า ตัวเลือก ราคา และสต็อก</p></div><button class="secondary" id="backShop">ดูหน้าร้าน</button></div>
+<div class="notice warning">ตั้งค่าไฟล์ Google Drive เป็น “ทุกคนที่มีลิงก์” · ลิงก์รูปจาก Drive แปลงเป็นรูปให้อัตโนมัติ · สต็อก (โค้ด/รหัส) เห็นเฉพาะแอดมิน ลูกค้าเห็นแค่จำนวนคงเหลือ และแยกสต็อกตามตัวเลือก</div>
+<h3 id="formTitle">เพิ่มสินค้าใหม่</h3>
+<input id="prodName" placeholder="ชื่อสินค้า">
+<label>ลิงก์รูปสินค้า (ลิงก์รูปหรือ Google Drive)</label><input id="prodImg" type="url" placeholder="https://...">
+<label>ลิงก์ Google Drive รายละเอียด (ลูกค้าทุกคนเห็น)</label><input id="prodLink" type="url" placeholder="https://drive.google.com/...">
+<label>รายละเอียดสินค้า</label><textarea id="prodDesc" placeholder="รายละเอียดสินค้า"></textarea>
+<label><input type="checkbox" id="prodPop" style="width:auto;margin:0 6px 0 0"> ติดป้าย “ยอดนิยม”</label>
+<h3 style="margin-top:16px">ตัวเลือกสินค้า (ราคา / สต็อก)</h3><div id="variantEditor"></div>
+<div class="actions"><button class="secondary" id="addVariant">+ เพิ่มตัวเลือก</button><button id="saveProduct">บันทึกสินค้า</button><button class="secondary" id="cancelEdit">ล้างฟอร์ม</button></div><p id="saveMsg" class="muted"></p></div>
+<div class="panel"><h3>รายการสินค้าในระบบ</h3><div id="adminProducts" class="grid"></div></div>
+<div class="panel"><h3>โค้ดส่วนลด</h3><div class="actions"><input id="dcCode" placeholder="โค้ด" style="max-width:200px;margin:0"><input id="dcPct" type="number" min="1" max="100" placeholder="ลด %" style="max-width:120px;margin:0"><button id="dcAdd">เพิ่มโค้ด</button></div><div id="dcList" style="margin-top:12px"></div></div>
+</section>
+</main><footer>iNO Shop · ตัวอย่างระบบร้านค้า (เดโม่ ไม่มีระบบชำระเงินจริง)</footer>
+
+<script>
+const $=id=>document.getElementById(id);
+const read=(k,d)=>{try{return JSON.parse(localStorage.getItem(k))??d}catch{return d}};
+const write=(k,v)=>localStorage.setItem(k,JSON.stringify(v));
+const ADMIN_USER='admin',ADMIN_PASS='12345654321';
+let products=read('ino_products',[]),stocks=read('ino_stock',{}),users=read('ino_users',[]),codes=read('ino_codes',[]),orders=read('ino_orders',[]),current=read('ino_current',null);
+let admin=current===ADMIN_USER,registering=false,editId=null,formVariants=[],detail={pid:null,vid:null,qty:1,code:null};
+const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+// migrate old products (no variants)
+products.forEach(p=>{if(!p.variants){const vid=uid();p.variants=[{id:vid,label:'มาตรฐาน',price:Number(p.price||0),orig:0}];stocks[vid]=[...(stocks[p.id]||[]),...(Array.isArray(p.stock)?p.stock:[])];delete stocks[p.id];delete p.stock;delete p.price}if(p.sold==null)p.sold=0;if(p.img==null)p.img=''});
+const save=()=>{write('ino_products',products);write('ino_stock',stocks);write('ino_codes',codes);write('ino_orders',orders)};save();
+const stockOf=id=>stocks[id]||[];
+const money=n=>'฿'+Number(n).toLocaleString('th-TH',{maximumFractionDigits:2});
+function esc(s=''){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function safeUrl(s){try{let u=new URL(s);return ['https:','http:'].includes(u.protocol)?u.href:''}catch{return ''}}
+function imgUrl(s){const u=safeUrl(s);if(!u)return '';const m=u.match(/drive\.google\.com\/file\/d\/([^/]+)/)||u.match(/drive\.google\.com\/(?:open|uc)\?(?:.*&)?id=([^&]+)/);return m?`https://drive.google.com/thumbnail?id=${m[1]}&sz=w1200`:u}
+const pct=v=>v.orig>v.price&&v.orig>0?Math.round((1-v.price/v.orig)*100):0;
+const totalStock=p=>p.variants.reduce((a,v)=>a+stockOf(v.id).length,0);
+const cheapest=p=>p.variants.reduce((a,b)=>b.price<a.price?b:a,p.variants[0]);
+function thumb(p){const u=imgUrl(p.img);return u?`<img class="thumb" src="${esc(u)}" alt="" loading="lazy" onerror="this.outerHTML='<div class=&quot;thumb&quot;>${esc((p.name||'?')[0])}</div>'">`:`<div class="thumb">${esc((p.name||'?')[0])}</div>`}
+function fmtSold(n){return n>=1000?(n/1000).toFixed(1).replace(/\.0$/,'')+'K':n}
+
+function updateHeader(){$('who').textContent=current?(admin?'แอดมิน':current):'';$('loginBtn').classList.toggle('hidden',!!current);$('logoutBtn').classList.toggle('hidden',!current);$('manageBtn').classList.toggle('hidden',!admin);$('ordersBtn').classList.toggle('hidden',!current||admin)}
+function show(id){['auth','shopView','detailView','ordersView','adminView'].forEach(x=>$(x).classList.add('hidden'));$(id).classList.remove('hidden');window.scrollTo(0,0)}
+
+function renderShop(){
+ $('products').innerHTML=products.length?products.map(p=>{const c=cheapest(p);if(!c)return '';const d=pct(c);return `<article class="pcard">${p.popular?'<div class="badge">🔥 ยอดนิยม</div>':''}${thumb(p)}<h3 class="pname">${esc(p.name)}</h3><div class="hr"></div><div class="from"><span class="muted">เริ่ม</span><span class="big">${money(c.price)}</span>${d?`<span class="old">${money(c.orig)}</span><span class="off">ลด ${d}%</span>`:''}</div><div class="stats muted">คงเหลือ <b>${totalStock(p)}</b> &nbsp;|&nbsp; ขายแล้ว <em>${fmtSold(p.sold||0)}</em></div><button class="full" onclick="openProduct('${p.id}')">🛒 ซื้อสินค้า ›</button></article>`}).join(''):'<div class="empty">ยังไม่มีสินค้า</div>';
+}
+window.openProduct=id=>{const p=products.find(x=>x.id===id);if(!p)return;const first=p.variants.find(v=>stockOf(v.id).length)||p.variants[0];detail={pid:id,vid:first&&first.id,qty:1,code:null};renderDetail();show('detailView')};
+function renderDetail(){
+ const p=products.find(x=>x.id===detail.pid);if(!p){show('shopView');return}
+ const v=p.variants.find(x=>x.id===detail.vid),st=v?stockOf(v.id).length:0,c=cheapest(p),d=c?pct(c):0;
+ const dc=detail.code?codes.find(x=>x.code===detail.code):null,disc=dc?dc.pct:0;
+ const unit=v?v.price:0,sub=unit*detail.qty,total=sub*(1-disc/100);
+ $('detailView').innerHTML=`<div class="crumb"><a onclick="show('shopView')">หน้าแรก</a> / ${esc(p.name)}</div>
+ <div class="panel" style="padding:12px">${thumb(p)}</div>
+ <div class="panel"><h1>${esc(p.name)}</h1>${d?`<span class="off">🏷 ลด ${d}%</span>`:''}<div class="hr" style="margin:16px 0"></div>
+ <h3>📄 รายละเอียดสินค้า</h3><p class="muted" style="white-space:pre-wrap">${p.desc?esc(p.desc):'ยังไม่มีข้อมูลรายละเอียดสำหรับสินค้านี้'}</p>${safeUrl(p.link)?`<p><a href="${esc(safeUrl(p.link))}" target="_blank" rel="noopener">เปิดลิงก์ Google Drive ↗</a></p>`:''}
+ <div class="hr" style="margin:16px 0"></div>
+ <div class="row"><h3 style="margin:0">เลือกตัวเลือก</h3><span class="muted">${p.variants.length} ตัวเลือก</span></div>
+ <div class="opts">${p.variants.map(x=>{const s=stockOf(x.id).length,dd=pct(x);return `<div class="opt ${x.id===detail.vid?'sel':''} ${s?'':'out'}" onclick="pickVariant('${x.id}')">${x.id===detail.vid?'<span class="tick">✔</span>':''}<div class="l">${esc(x.label)}</div><div class="r"><span><span class="p">${money(x.price)}</span> ${dd?`<span class="old">${money(x.orig)}</span>`:''}</span><span class="s">${s?'เหลือ '+s+' ชิ้น':'หมด'}</span></div></div>`}).join('')}</div>
+ <div class="hr" style="margin:16px 0"></div>
+ <div class="row"><b>จำนวน</b><div class="qty"><button onclick="chgQty(-1)">−</button><span>${detail.qty}</span><button onclick="chgQty(1)">+</button></div></div>
+ <div class="hr"></div>
+ <div class="actions" style="margin:14px 0"><input id="dcInput" placeholder="โค้ดส่วนลด (ถ้ามี)" value="${esc(detail.code||'')}" style="flex:1;margin:0"><button class="secondary" onclick="checkCode()">ตรวจสอบ</button></div><p id="dcMsg" class="muted">${dc?`ใช้โค้ด ${esc(dc.code)} ลด ${dc.pct}%`:''}</p>
+ <div class="row"><div><b style="font-size:20px">ราคารวมทั้งสิ้น</b><div class="muted">${detail.qty} ชิ้น × ${money(unit)}</div></div><div>${disc?`<span class="old">${money(sub)}</span> `:''}<span class="total">${money(total)}</span></div></div>
+ <button class="full" onclick="buy()" ${st>=detail.qty&&v?'':'disabled style="opacity:.5"'}>🛒 ${st?'ซื้อสินค้า':'สินค้าหมด'}</button><p id="buyMsg" class="muted" style="margin-top:10px"></p></div>`;
+}
+window.pickVariant=id=>{const p=products.find(x=>x.id===detail.pid);if(!stockOf(id).length)return;detail.vid=id;detail.qty=1;renderDetail()};
+window.chgQty=n=>{const s=stockOf(detail.vid).length;detail.qty=Math.max(1,Math.min(Math.max(s,1),detail.qty+n));renderDetail()};
+window.checkCode=()=>{const c=$('dcInput').value.trim();if(!c){detail.code=null;renderDetail();return}const f=codes.find(x=>x.code.toLowerCase()===c.toLowerCase());detail.code=f?f.code:null;renderDetail();if(!f)$('dcMsg').textContent='โค้ดไม่ถูกต้อง'};
+window.buy=()=>{
+ if(!current){setAuthMode(false);$('authMsg').textContent='กรุณาเข้าสู่ระบบก่อนซื้อสินค้า';show('auth');return}
+ const p=products.find(x=>x.id===detail.pid),v=p&&p.variants.find(x=>x.id===detail.vid);if(!v)return;
+ const s=stockOf(v.id);if(s.length<detail.qty){renderDetail();return}
+ const dc=detail.code?codes.find(x=>x.code===detail.code):null,total=v.price*detail.qty*(1-(dc?dc.pct:0)/100);
+ const items=s.splice(0,detail.qty);stocks[v.id]=s;p.sold=(p.sold||0)+detail.qty;
+ orders.unshift({id:uid(),user:current,product:p.name,variant:v.label,qty:detail.qty,total,items,date:new Date().toLocaleString('th-TH')});
+ save();renderShop();renderOrders();show('ordersView')};
+function renderOrders(){
+ const mine=orders.filter(o=>o.user===current);
+ $('orderList').innerHTML=mine.length?mine.map(o=>`<div class="order"><b>${esc(o.product)}</b> · ${esc(o.variant)} × ${o.qty}<div class="muted">${esc(o.date)} · ${money(o.total)}</div>${o.items.map(i=>`<div class="code">${esc(i)}</div>`).join('')}</div>`).join(''):'<div class="empty">ยังไม่มีออเดอร์</div>';
+}
+
+// ---------- auth ----------
+function setAuthMode(r){registering=r;$('authTitle').textContent=r?'สมัครสมาชิก':'เข้าสู่ระบบ';$('authSubmit').textContent=r?'สร้างบัญชี':'เข้าสู่ระบบ';$('switchAuth').textContent=r?'กลับไปเข้าสู่ระบบ':'สมัครสมาชิก'}
+$('loginBtn').onclick=()=>{setAuthMode(false);$('authMsg').textContent='';show('auth')};
+$('closeAuth').onclick=()=>show('shopView');
+$('switchAuth').onclick=()=>{setAuthMode(!registering);$('authMsg').textContent=''};
+$('authSubmit').onclick=()=>{
+ let u=$('authUser').value.trim(),p=$('authPass').value;
+ if(!u||!p){$('authMsg').textContent='กรอกชื่อผู้ใช้และรหัสผ่านให้ครบ';return}
+ if(registering){if(u.toLowerCase()===ADMIN_USER||users.some(x=>x.u===u)){$('authMsg').textContent='ชื่อผู้ใช้นี้มีแล้ว';return}users.push({u,p});write('ino_users',users);setAuthMode(false);$('authMsg').textContent='สมัครสำเร็จ กรุณาเข้าสู่ระบบ';return}
+ if(u===ADMIN_USER&&p===ADMIN_PASS){admin=true;current=ADMIN_USER;write('ino_current',current);$('authPass').value='';updateHeader();renderAdmin();show('adminView');return}
+ if(!users.some(x=>x.u===u&&x.p===p)){$('authMsg').textContent='ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง';return}
+ admin=false;current=u;write('ino_current',current);$('authPass').value='';updateHeader();renderOrders();show('shopView')};
+$('logoutBtn').onclick=()=>{current=null;admin=false;write('ino_current',null);clearForm();updateHeader();renderShop();show('shopView')};
+$('manageBtn').onclick=()=>{if(admin){renderAdmin();show('adminView')}};
+$('ordersBtn').onclick=()=>{renderOrders();show('ordersView')};
+$('backShop').onclick=()=>{renderShop();show('shopView')};
+$('logo').onclick=()=>{renderShop();show('shopView')};
+
+// ---------- admin ----------
+function renderVariantEditor(){
+ $('variantEditor').innerHTML=formVariants.map((v,i)=>{const s=stockOf(v.id);return `<div class="vrow"><div class="vgrid"><div><label>ชื่อตัวเลือก (เช่น 1 วัน)</label><input value="${esc(v.label)}" oninput="formVariants[${i}].label=this.value"></div><div><label>ราคา (บาท)</label><input type="number" min="0" step="any" value="${esc(v.price)}" oninput="formVariants[${i}].price=this.value"></div><div><label>ราคาเดิม (ถ้ามี)</label><input type="number" min="0" step="any" value="${esc(v.orig)}" oninput="formVariants[${i}].orig=this.value"></div></div>
+ <label>เพิ่มสต็อก (โค้ด/รหัส บรรทัดละ 1 ชุด · ต่อท้ายของเดิม)</label><textarea placeholder="CODE001|USER001|PASS001" oninput="formVariants[${i}].add=this.value">${esc(v.add||'')}</textarea>
+ <details><summary>สต็อกปัจจุบัน ${s.length} ชุด (เฉพาะแอดมิน)</summary>${s.length?s.map((x,j)=>`<div class="stockrow"><span>${esc(x)}</span><button class="danger sm" onclick="removeStock('${v.id}',${j})">ลบ</button></div>`).join(''):'<p class="muted">ยังไม่มีสต็อก</p>'}</details>
+ <div style="margin-top:10px"><button class="danger sm" onclick="removeVariant(${i})">ลบตัวเลือกนี้</button></div></div>`}).join('')||'<p class="muted">ยังไม่มีตัวเลือก กด “เพิ่มตัวเลือก”</p>';
+}
+window.removeStock=(vid,j)=>{stocks[vid]=stockOf(vid).filter((_,k)=>k!==j);save();renderVariantEditor();renderAdmin(true)};
+window.removeVariant=i=>{if(confirm('ลบตัวเลือกนี้และสต็อกของมัน?')){delete stocks[formVariants[i].id];formVariants.splice(i,1);renderVariantEditor()}};
+$('addVariant').onclick=()=>{formVariants.push({id:uid(),label:'',price:'',orig:'',add:''});renderVariantEditor()};
+function clearForm(){editId=null;$('formTitle').textContent='เพิ่มสินค้าใหม่';['prodName','prodImg','prodLink','prodDesc'].forEach(x=>$(x).value='');$('prodPop').checked=false;formVariants=[{id:uid(),label:'',price:'',orig:'',add:''}];$('saveMsg').textContent='';renderVariantEditor()}
+$('cancelEdit').onclick=clearForm;
+$('saveProduct').onclick=()=>{
+ if(!admin)return;
+ const name=$('prodName').value.trim(),img=$('prodImg').value.trim(),link=$('prodLink').value.trim(),desc=$('prodDesc').value.trim(),popular=$('prodPop').checked;
+ if(!name){$('saveMsg').textContent='กรอกชื่อสินค้า';return}
+ if((link&&!safeUrl(link))||(img&&!safeUrl(img))){$('saveMsg').textContent='ลิงก์ไม่ถูกต้อง กรุณาใส่ลิงก์ http หรือ https';return}
+ const vs=formVariants.filter(v=>v.label.trim()||v.price!=='');
+ if(!vs.length||vs.some(v=>!v.label.trim()||v.price===''||Number(v.price)<0)){$('saveMsg').textContent='กรอกชื่อตัวเลือกและราคาให้ครบอย่างน้อย 1 ตัวเลือก';return}
+ const variants=vs.map(v=>({id:v.id,label:v.label.trim(),price:Number(v.price),orig:Number(v.orig||0)}));
+ vs.forEach(v=>{const lines=(v.add||'').split(/\r?\n/).map(x=>x.trim()).filter(Boolean);stocks[v.id]=[...stockOf(v.id),...lines]});
+ if(editId){const p=products.find(x=>x.id===editId);if(p){const keep=new Set(variants.map(v=>v.id));p.variants.forEach(v=>{if(!keep.has(v.id))delete stocks[v.id]});Object.assign(p,{name,img,link,desc,popular,variants})}}
+ else products.push({id:uid(),name,img,link,desc,popular,sold:0,variants});
+ save();clearForm();renderAdmin();renderShop();$('saveMsg').textContent='บันทึกแล้ว'};
+window.editProduct=id=>{const p=products.find(x=>x.id===id);if(!p)return;editId=id;$('formTitle').textContent='แก้ไขสินค้า';$('prodName').value=p.name;$('prodImg').value=p.img||'';$('prodLink').value=p.link||'';$('prodDesc').value=p.desc||'';$('prodPop').checked=!!p.popular;formVariants=p.variants.map(v=>({...v,add:''}));renderVariantEditor();window.scrollTo({top:0,behavior:'smooth'})};
+window.deleteProduct=id=>{if(confirm('ยืนยันลบสินค้านี้?')){const p=products.find(x=>x.id===id);p&&p.variants.forEach(v=>delete stocks[v.id]);products=products.filter(x=>x.id!==id);if(editId===id)clearForm();save();renderAdmin();renderShop()}};
+function renderAdmin(){
+ $('adminProducts').innerHTML=products.length?products.map(p=>`<article class="pcard"><b>${esc(p.name)}</b><span class="muted">${p.variants.length} ตัวเลือก · คงเหลือ ${totalStock(p)} · ขายแล้ว ${p.sold||0}</span><div class="actions"><button class="secondary sm" onclick="editProduct('${p.id}')">แก้ไข / สต็อก</button><button class="danger sm" onclick="deleteProduct('${p.id}')">ลบ</button></div></article>`).join(''):'<div class="empty">ยังไม่มีสินค้า</div>';
+ $('dcList').innerHTML=codes.length?codes.map((c,i)=>`<div class="stockrow"><span>${esc(c.code)} — ลด ${c.pct}%</span><button class="danger sm" onclick="delCode(${i})">ลบ</button></div>`).join(''):'<p class="muted">ยังไม่มีโค้ดส่วนลด</p>';
+}
+$('dcAdd').onclick=()=>{const c=$('dcCode').value.trim(),n=Number($('dcPct').value);if(!c||!(n>0&&n<=100)||codes.some(x=>x.code.toLowerCase()===c.toLowerCase()))return;codes.push({code:c,pct:n});save();$('dcCode').value='';$('dcPct').value='';renderAdmin()};
+window.delCode=i=>{codes.splice(i,1);save();renderAdmin()};
+
+clearForm();updateHeader();renderShop();renderOrders();renderAdmin();show(admin?'adminView':'shopView');
+</script></body></html>
